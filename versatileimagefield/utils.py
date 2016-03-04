@@ -222,12 +222,15 @@ def build_versatileimagefield_url_set(image_instance, size_set, request=None):
     """
     size_set = validate_versatileimagefield_sizekey_list(size_set)
     to_return = {}
-    if image_instance:
-        for key, image_key in size_set:
-            img_url = get_url_from_image_key(image_instance, image_key)
-            if request is not None:
-                img_url = request.build_absolute_uri(img_url)
-            to_return[key] = img_url
+    try:
+        if image_instance.url:
+            for key, image_key in size_set:
+                img_url = get_url_from_image_key(image_instance, image_key)
+                if request is not None:
+                    img_url = request.build_absolute_uri(img_url)
+                to_return[key] = img_url
+    except ValueError:
+        pass
     return to_return
 
 
